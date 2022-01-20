@@ -44,7 +44,7 @@ resource "oci_identity_policy" "this" {
 
   for_each = local.policies_per_compartment
   #Required
-  compartment_id = data.oci_identity_compartments._children[local.policy_compartment].compartments[0].id
+  compartment_id = try(data.oci_identity_compartments._children[local.policy_compartment].compartments[0].id, data.oci_identity_compartments.this[local.parent_compartment].compartments[0].id )
   description    = each.value.description
   name           = each.key
   statements     = each.value.statements
